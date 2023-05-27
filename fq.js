@@ -62,7 +62,7 @@ const $ = new Env(`阅读自动返回`);
         }
       } else {
         // 如果重定向的是微信文章，改写重定向地址
-        let url200 = $response.headers
+        let url200 = ($response.headers && $response.headers['Location']) || ''
         if (url200.match(/https:\/\/mp\.weixin\.qq\.com\/s/)) {
           let mock = true
           if (url.indexOf('v3/read?') > 0) {
@@ -79,16 +79,16 @@ const $ = new Env(`阅读自动返回`);
           if (mock) {
             $.log('修改重定向地址为倒计时空白页面')
             let host = url.match(/^https:\/\/(.+?)\//)[1]
-            $response.headers = `http://${host}/task/read`
+            $response.headers['Location'] = `http://${host}/task/read`
             $.done({headers: $response.headers})
           } else {
             $.log('为重定向的微信文章地址添加注入标识')
-            if (!url200.indexOf('?')) {
-              $response.headers = url200 + '?k=feizao'
+            if (!url302.indexOf('?')) {
+              $response.headers['Location'] = url200 + '?k=feizao'
             } else if (url200.indexOf('?') && url200.indexOf('&')) {
-              $response.headers = url200.replace('&', `&k=feizao&`)
+              $response.headers['Location'] = url200.replace('&', `&k=feizao&`)
             } else {
-              $response.headers = url200.replace('?', `?k=feizao&`)
+              $response.headers['Location'] = url200.replace('?', `?k=feizao&`)
             }
             $.done({headers: $response.headers})
           }
