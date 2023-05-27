@@ -18,20 +18,24 @@ const $ = new Env(`阅读自动返回`);
           <meta charset="UTF-8">
       </head>
       <style>
-          div {position:absolute; top:50%; left:50%; margin:0 0 0 -234px; width:auto; height:auto; border:0px solid #008800; font-size: 7vw}
+          div {position:absolute; top:50%; left:50%; margin:0 0 0 -234px; width:auto; height:auto; border:0px solid #008800; font-size: 7vw;}
       </style>
-      <body><div id="timer"></div></body>
+      <body bgcolor="#FFFFFF"><p p style="text-align: center;font-size:7vw;">🍅
+🎃
+☁️ </p><p style="text-align:right;font-size:7vw;"></p><div id="timer"></div></body>
       <script>
           var oBox= document.getElementById('timer');
-          var maxtime = parseInt(Math.random() * (6 - 3 + 1) + 3);
-          setTimeout(()=>window.history.back(),maxtime*1000);
+          var maxtime = parseInt(Math.random() * (10 - 9 + 1) + 9 + 1, 11)- 5;
+          setTimeout(()=>window.history.go(-1),maxtime*1000);
           function CountDown() {
               if (maxtime >= 0) {
-                  oBox.innerHTML = '结束倒计时'+maxtime+'秒';
+                 oBox.innerHTML = '返回倒计时'+maxtime+'秒';
                   --maxtime;
               } else{
                   clearInterval(timer);
-                  window.history.back();
+                  //window.history.back();
+//window.history.go(-1);
+  
               }
           }
           timer = setInterval("CountDown()", 1000);
@@ -39,7 +43,7 @@ const $ = new Env(`阅读自动返回`);
       </html>
       `
       const headers = {
-        "Connection": "Close",
+        "Connection": "keep-alive",
         'Content-Type': 'text/html; charset=utf-8'
       };
       if ($.isSurge() || $.isLoon()) {
@@ -60,11 +64,11 @@ let str=JSON.stringify($response.headers)
     let url = $request.url
       let body = $response.body || ''
 //这个url是微信提供是一个测试接口，是空白页面，并不会产生阅读数据
-      //let newUrl = 'http://www.wx.read.com/s'
-let newUrl='/https:\/\/mp\.weixin\.qq\.com\/s/'
+      //let newUrl = 'http://www.wx.read.com/mock/read'
+//let newUrl='http://mp.weixin.qq.com/api/mock/read'
 
- //let newUrl='http://czy.com/v1/fqkk'
-  if (url.indexOf('/tuijian/do_read') > 0 || url.indexOf("read_task/")>0 || url.indexOf("yunonline/v1/jump")>0){
+ let newUrl='http://czy.com/v1/fqkk'
+  if (url.indexOf('/s') > 0 || url.indexOf("read_task/")>0 || url.indexOf("yunonline/v1/jump")>0){
 
 
 
