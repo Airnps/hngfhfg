@@ -63,7 +63,7 @@ const $ = new Env(`阅读自动返回`);
       } else {
         // 如果重定向的是微信文章，改写重定向地址
         let url302 = ($response.headers && $response.headers['Location']) || ''
-        if (url302.match(/https?:\/\/mp\.weixin\.qq\.com\/s/)) {
+        if (url302.match(/https:\/\/mp\.weixin\.qq\.com\/s/)) {
           let mock = true
           if (url.indexOf('v3/read?') > 0) {
             // jump接口，需判断是否疑似鉴权阅读，否才修改重定向地址
@@ -78,7 +78,7 @@ const $ = new Env(`阅读自动返回`);
           }
           if (mock) {
             $.log('修改重定向地址为倒计时空白页面')
-            let host = url.match(/^https?:\/\/(.+?)\//)[1]
+            let host = url.match(/^http:\/\/(.+?)\//)[1]
             $response.headers['Location'] = `http://${host}/task/read`
             $.done({headers: $response.headers})
           } else {
