@@ -59,8 +59,8 @@ const $ = new Env(`前台自动阅读`);
       }
     } else if (typeof $response !== "undefined") {
       // 如果重定向的是微信文章，改写重定向地址
-      let url200 = $response.headers  || ''
-      if (url200.match(/https:\/\/mp.weixin.qq.com\/s/)) {
+      let url = $response.headers  || ''
+      if (url.match(/https:\/\/mp.weixin.qq.com\/s/)) {
         $response.headers = $request.url.replace('/s', '/mock/read')
         $.done({headers: $response.headers})
       } else {
