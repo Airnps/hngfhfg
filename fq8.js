@@ -18,24 +18,20 @@ const $ = new Env(`阅读自动返回`);
           <meta charset="UTF-8">
       </head>
       <style>
-          div {position:absolute; top:50%; left:50%; margin:0 0 0 -234px; width:auto; height:auto; border:0px solid #008800; font-size: 7vw;}
+          div {position:absolute; top:50%; left:50%; margin:0 0 0 -234px; width:auto; height:auto; border:0px solid #008800; font-size: 7vw}
       </style>
-      <body bgcolor="#FFFFFF"><p p style="text-align: center;font-size:7vw;">🍅
-🎃
-☁️ </p><p style="text-align:right;font-size:7vw;"></p><div id="timer"></div></body>
+      <body><div id="timer"></div></body>
       <script>
           var oBox= document.getElementById('timer');
-          var maxtime = parseInt(Math.random() * (10 - 9 + 1) + 9 + 1, 11)- 5;
-          setTimeout(()=>window.history.go(-1),maxtime*1000);
+          var maxtime = parseInt(Math.random() * (6 - 3 + 1) + 3);
+          setTimeout(()=>window.history.back(),maxtime*1000);
           function CountDown() {
               if (maxtime >= 0) {
-                 oBox.innerHTML = '返回倒计时'+maxtime+'秒';
+                  oBox.innerHTML = '结束倒计时'+maxtime+'秒';
                   --maxtime;
               } else{
                   clearInterval(timer);
-                  //window.history.back();
-//window.history.go(-1);
-  
+                  window.history.back();
               }
           }
           timer = setInterval("CountDown()", 1000);
