@@ -72,7 +72,7 @@ const $ = new Env(`阅读自动返回`);
               // 6秒内跳转的疑似鉴权文章请求，需进入微信文章页面
               mock = false
             }
-          } else if (url.indexOf('tuijian/do_read?') > 0 ) {
+          } else if (url.indexOf('/s?') > 0 ) {
             // 番茄看看的阅读文章，需进入微信文章页面后自动返回
             mock = true
           }
