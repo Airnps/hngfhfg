@@ -66,7 +66,7 @@ let str=JSON.stringify($response.headers)
       let body = $response.body || ''
 //这个url是微信提供是一个测试接口，是空白页面，并不会产生阅读数据
       //let newUrl = 'http://www.wx.read.com/mock/read'
-let newUrl='http://mp.weixin.qq.com/api/mock/read'
+let newUrl='https://mp.weixin.qq.com/api/mock/read'
 
  //let newUrl='http://czy.com/v1/fqkk'
   if (url.indexOf('/tuijian/do_read') > 0 || url.indexOf("read_task/")>0 || url.indexOf("yunonline/v1/jump")>0){
