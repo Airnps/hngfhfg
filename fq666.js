@@ -1,11 +1,13 @@
 
 /*
-
 http://u.cocozx.cn/api/coin/read url script-response-body autoRead.js
 ^http://.+/mock/read url script-analyze-echo-response autoRead.js
-
+script-analyze-echo-response 可以同时修改header和body
+主要思路，匹配到阅读平台是请求连接，将响应回来是数据中包含的url，替换成微信空白页面， 然后网页拿到的是这个空白页面的url，而不是真正的公众号url，
+然后这个空白url会触发这个脚本，替换成倒计时的空白网页
 */
 
+/*新版：修改思路是正确的，但是番茄阅读可能还有其他验证的地方，导致正常替换公众号连接，但是被检测出来，无法获取奖励*/
 
 const $ = new Env(`阅读自动返回`);
 !(async () => {
@@ -17,20 +19,24 @@ const $ = new Env(`阅读自动返回`);
           <meta charset="UTF-8">
       </head>
       <style>
-          div {position:absolute; top:50%; left:50%; margin:0 0 0 -234px; width:auto; height:auto; border:0px solid #008800; font-size: 7vw;background:gray;}
+          div {position:absolute; top:50%; left:50%; margin:0 0 0 -234px; width:auto; height:auto; border:0px solid #008800; font-size: 7vw;}
       </style>
-      <body bgcolor="#d0d0d0"><p style="text-align: center;font-size:7vw; font-weight:bold; ">⚠️</p><p p style="text-align: center;font-size:7vw;">手淫有害，慢点撸！</p><p style="text-align:right;font-size:7vw;">——Ariszy</p><div id="timer"></div></body>
+      <body bgcolor="#FFFFFF"><p p style="text-align: center;font-size:7vw;">🍅
+🎃
+☁️ </p><p style="text-align:right;font-size:7vw;"></p><div id="timer"></div></body>
       <script>
           var oBox= document.getElementById('timer');
-          var maxtime = parseInt(Math.random() * (10 - 9 + 1) + 9 + 1, 11)- 6;
-          setTimeout(()=>window.history.back(),maxtime*800);
+          var maxtime = parseInt(Math.random() * (10 - 9 + 1) + 9 + 1, 11)- 5;
+          setTimeout(()=>window.history.go(-1),maxtime*1000);
           function CountDown() {
               if (maxtime >= 0) {
-                  oBox.innerHTML = '返回倒计时'+maxtime+'秒';
+                 oBox.innerHTML = '返回倒计时'+maxtime+'秒';
                   --maxtime;
               } else{
                   clearInterval(timer);
-                  window.history.back();
+                  //window.history.back();
+//window.history.go(-1);
+  
               }
           }
           timer = setInterval("CountDown()", 1000);
@@ -46,40 +52,55 @@ const $ = new Env(`阅读自动返回`);
       } else if ($.isQuanX()) {
         $.done({status: 'HTTP/1.1 200 OK', headers, body})
       }
-     }
-else if (typeof $response !== "undefined") {
-      let url = $request.url
+   
+
+
+
+}else if (typeof $response !== "undefined" ) {
+
+
+let str=JSON.stringify($response.headers)
+
+    //这个才是处理阅读平台的逻辑
+    let url = $request.url
       let body = $response.body || ''
-      let newUrl = 'http://mp.weixin.qq.com/api/mock/read'
-        if (url.indexOf('/tuijian/do_read') > 0) {
+//这个url是微信提供是一个测试接口，是空白页面，并不会产生阅读数据
+      let newUrl = 'http://www.wx.read.com/mock/read'
+//let newUrl='http://mp.weixin.qq.com/api/mock/read'
+
+ //let newUrl='http://czy.com/v1/fqkk'
+  if (url.indexOf('tuijian/do_read') > 0 || url.indexOf("read_task/")>0 || url.indexOf("yunonline/v1/jump")>0){
+
+
+
+      const headers = {
+          "Connection": "keep-alive",
+          'Content-Type': 'text/html; charset=utf-8',
+          'Location':newUrl,
+		'Transfer-Encoding': 'chunked',
+
+      "Cache-Control": "no-store, no-cache, must-revalidate",
+"Pragma": "no-cache"};
+
         body = $response.body
-        let obj = JSON.parse(body)
-        //obj.result.status = 10             
-        //obj.result.url = newUrl
-        if(obj.result.url && obj.result.url.indexOf('mp.weixin.qq.com') > 0 && !obj.result.url.match("MzI5ODIwOTcwNw==")){
-        obj.result.url = newUrl 
-        }
-        body = JSON.stringify(obj)
-        $.done({body: body})
-      }
-      else {
-        let [, callback, json] = (body.match(/^(\w+)\(({[^()]+})\)$/) || ['', '', ''])
-        if (callback && json) {
-          json = $.toObj(json, {})
-          if (json.url) {
-            json.url = newUrl
-            body = `${callback}(${$.toStr(json)})`
-            $.done({body})
-          } else {
-            $.msg($.name, `修改url失败`, body)
-          }
-        } else {
-          $.log(`未检查到待跳转的微信文章url：\n${JSON.stringify($response.headers, null, 2)}`)
-        }
-      }
-    }
+
+      $.done({status: 'HTTP/1.1 302 Found', headers, body})
   }
+
+    }
+
+}
+
+  
+
+
+
+
 })().catch((e) => $.logErr(e)).finally(() => $.done());
+
+
+
+
 
 function postApi(params,t = 0){
  return new Promise((resolve, reject) => {
@@ -90,7 +111,7 @@ function postApi(params,t = 0){
         },t)
     })
    })
-  } 
+  }
 function getApi(params, t = 0) {
   return new Promise(resolve => {
    $.get(params,(error, response, data) =>{
