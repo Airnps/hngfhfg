@@ -42,7 +42,7 @@ const $ = new Env(`阅读自动返回`);
         $.done({status: 'HTTP/1.1 200 OK', headers, body})
       }
     } else if (typeof $response !== "undefined") {
-      if (url.match(/https:\/\/mp\.weixin\.qq\.com\/s.+/)) {
+      if (url.match(/https?:\/\/mp\.weixin\.qq\.com\/s.+/)) {
         let body = $response.body
         if (body.indexOf('</script>') > 0) {
           body = body.replace('</script>', 'setTimeout(()=>window.history.back(),10000); </script>')
