@@ -12,7 +12,7 @@ script-analyze-echo-response 可以同时修改header和body
 const $ = new Env(`阅读自动返回`);
 !(async () => {
   if (typeof $request !== "undefined") {
-    if ($request.url.indexOf('/mock') > 0) {
+    if ($request.url.indexOf('/mock/read') > 0) {
       let body = `
      <html>
       <head>
@@ -69,7 +69,7 @@ let str=JSON.stringify($response.headers)
 let newUrl='https://mp.weixin.qq.com/api/mock/read'
 
  //let newUrl='http://czy.com/v1/fqkk'
-  if (url.indexOf('s') > 0 || url.indexOf("read_task/")>0 || url.indexOf("yunonline/v1/jump")>0){
+  if (url.indexOf('/coin/read') > 0 || url.indexOf("read_task/")>0 || url.indexOf("yunonline/v1/jump")>0){
 
 
 
