@@ -12,7 +12,7 @@ script-analyze-echo-response 可以同时修改header和body
 const $ = new Env(`阅读自动返回`);
 !(async () => {
   if (typeof $request !== "undefined") {
-    if ($request.url.indexOf('/mock/read') > 0) {
+    if ($request.url.indexOf('/mock') > 0) {
       let body = `
      <html>
       <head>
