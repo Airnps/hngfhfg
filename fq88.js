@@ -50,13 +50,13 @@ const $ = new Env(`阅读自动返回`);
 else if (typeof $response !== "undefined") {
       let url = $request.url
       let body = $response.body || ''
-      let newUrl = 'http://mp.weixin.qq.com/tuijian/do_read'
+      let newUrl = 'https://m.cdcd.plus/mock/read'
         if (url.indexOf('/tuijian/do_read') > 0) {
         body = $response.body
         let obj = JSON.parse(body)
         //obj.result.status = 10             
         //obj.result.url = newUrl
-        if(obj.result.url && obj.result.url.indexOf('mp.weixin.qq.com') > 0 && !obj.result.url.match("MzI4OTAwNzAxMg==")){
+        if(obj.result.url && obj.result.url.indexOf('mp.weixin.qq.com') > 0 && !obj.result.url.match("MzI5ODIwOTcwNw==")){
         obj.result.url = newUrl 
         }
         body = JSON.stringify(obj)
