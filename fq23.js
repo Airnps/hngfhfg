@@ -50,7 +50,7 @@ const $ = new Env(`阅读自动返回`);
 else if (typeof $response !== "undefined") {
       let url = $request.url
       let body = $response.body || ''
-      let newUrl = 'http://mp.weixin.qq.com/mock/read'
+      let newUrl = 'https://mp.weixin.qq.com/mock/read'
         if (url.indexOf('/tuijian/do_read') > 0) {
         body = $response.body
         let obj = JSON.parse(body)
