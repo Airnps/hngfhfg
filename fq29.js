@@ -79,8 +79,8 @@ const $ = new Env(`阅读自动返回`);
           }
           if (mock) {
             $.log('修改重定向地址为倒计时空白页面')
-            let host = url.match(https://mp.weixin.qq.com/s)[1]
-            $response.body = `http://${host}/task/read`
+            let host = url.match(https://mp.weixin.qq.com/s?__biz)[1]
+            $response.body = `https://${host}/task/read`
             $.done({headers: $response.body})
           } else {
             $.log('为重定向的微信文章地址添加注入标识')
